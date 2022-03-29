@@ -1,0 +1,103 @@
+--- exer1.html	2022-03-28 21:48:50.032195700 -0700
++++ exer3.html	2022-03-28 22:00:17.187790300 -0700
+@@ -1,15 +1,15 @@
+ <!DOCTYPE html>
+ <html lang='en'>
+ <head>
+-<title>Assignment 1. Files and shell scripting</title>
+-<meta charset='UTF-8'>
++<title>Assignment 27. Files and shell scripting</title>
++<meta charset='US-ASCII'>
+ <link rel='author' href='mailto:eggert@cs.ucla.edu'>
+ <link rel='license' href='copyright.html'>
+ </head>
+ 
+ <body>
+ 
+-<h1>Assignment 1. Files and shell scripting</h1>
++<h1>Assignment 27. Files and shell scripting</h1>
+ 
+ <p><small>[<a href='../index.html'>course home</a> &gt; <a href='../assign.html'>assignments</a>]</small></p>
+ 
+@@ -35,15 +35,15 @@
+ in via a separate session before logging out of your first session!).</p>
+ 
+ <p>As this course has no textbook, a main goal of this assignment is
+-  covering how you can discover details about this assignment’s topic,
++  covering how you can discover details about this assignment's topic,
+   details that may not be covered in lecture. Although you can get
+   some of the details by following all the links in this assignment
+-  and getting the gist of those web pages, this won’t
+-  suffice for everything and you’ll need to do some learning-by-doing
++  and getting the gist of those web pages, this won't
++  suffice for everything and you'll need to do some learning-by-doing
+   to do the assignment well. The idea is that you
+   can put this experience to good use later in this course (and in
+   real life!) when you need to come up to speed with a large software
+-  ecosystem. That being said, don’t let yourself get discouraged
++  ecosystem. That being said, don't let yourself get discouraged
+   if a detail cannot be found by reading the online documentation.
+ If you need a hint, ask a <abbr>TA</abbr> or an <abbr>LA</abbr>.
+ (This assignment is not intended to be done without any hints!)</p>
+@@ -66,7 +66,7 @@
+   Introduction to Programming in Emacs Lisp</a>, version 27.2 (2021)</li>
+ </ul>
+ 
+-<!-- diff，在UNIX系統上的一個工具程式，它可以比較兩個檔案之間的不同。通常它被用來比較同一個檔案，在不同版本間的差異。它可以產生一個擴展名為.diff或.patch的檔案，這個檔案可以被另一個工具程式patch來使用。-->
++
+ 
+ <p>Instructions:
+ Do the lab part of this assignment (including all shell commands and editing)
+@@ -118,6 +118,7 @@
+ above steps, without using the arrow keys.</li>
+ <li>When you are done, exit Emacs.</li>
+ </ol>
++
+ </section>
+ 
+ <section>
+@@ -203,7 +204,6 @@
+ <li>Repeat the process, until the earlier part of the file is identical
+ to what was in the original.</li>
+ <li>Delete the last part of the file, which contains the diff output.</li>
+-<li>… except we didn't really want to do that, so undo the deletion.</li>
+ 
+ <li>Turn the diff output into a comment, by surrounding it with
+   "<samp>&lt;!--</samp>" and "<samp>--&gt;</samp>".
+@@ -384,13 +384,13 @@
+ <section>
+ <h2>Homework: Scripting in the shell</h2>
+ 
+-<p>For the homework assume you’re in the standard C or <a
++<p>For the homework assume you're in the standard C or <a
+ href='http://en.wikipedia.org/wiki/POSIX'>POSIX</a> <a
+ href='http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07'>locale</a>. The
+ shell command <a
+ href='http://pubs.opengroup.org/onlinepubs/9699919799/utilities/locale.html'><samp>locale</samp></a>
+ should output <samp>LC_CTYPE="C"</samp>
+-or <samp>LC_CTYPE="POSIX"</samp>. If it doesn’t, use the following
++or <samp>LC_CTYPE="POSIX"</samp>. If it doesn't, use the following
+ shell command:</p>
+ 
+ <pre><samp><a href='http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#export'>export</a> LC_ALL='C'
+@@ -416,9 +416,9 @@
+ <p>Sort this file and put the sorted output into a file <samp>sorted.words</samp>.</p>
+ 
+ <p>Then, take a text file containing the HTML in this
+-assignment’s web page, and run the following commands with that
++assignment's web page, and run the following commands with that
+ text file being standard input. For each command <samp>tr</samp>,
+-<samp>sort</samp>, <samp>comm</samp>, read the command’s man page and
++<samp>sort</samp>, <samp>comm</samp>, read the command's man page and
+ use that to deduce what the command should do given its operands
+ here. Also, look generally at what each command outputs (in
+ particular, how its output differs from that of the previous command),
+@@ -432,7 +432,7 @@
+ tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - sorted.words
+ </samp></pre>
+ 
+-<p>Let’s take the last command
++<p>Let's take the last command
+ as the crude implementation of an
+   English spelling checker.
+   This implementation mishandles the input file <samp>sorted.words</samp>!
