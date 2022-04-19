@@ -1,0 +1,61 @@
+Lab 1.5
+1. sh is located in /usr/bin/sh. sleep is located in /usr/local/cs/bin/sleep. export is builtin to the shell. I used the which [command-name] command to find the locations.
+2. The du command estimates file space usage. The su command allows you to run commands as another user or group. I used ls /usr/bin | grep "^.u$" to get the commands and used man [command-name] to lookup what they do.
+3. The /usr/local/cs/emacs-27.2/bin/emacs-27.2 is executed when the command named by symbolic link /usr/local/cs/bin/emacs is executed.
+The ls -l /usr/local/cs/bin/emacs gave this output:
+lrwxrwxrwx 2 eggert csfac 28 Mar 26  2021 /usr/local/cs/bin/emacs -> ../emacs-27.2/bin/emacs-27.2
+which meant that when the command is executed, the file that is actually run is /usr/local/cs/emacs-27.2/bin/emacs-27.2.
+4. /usr/bin/gcc has version 8.5.0. Plain gcc has version 11.2.0. I found this by typing /usr/bin/gcc --version and gcc --version to check the version number. They are different programs because /usr/bin/gcc runs the file located at that file directory and the plain gcc command executes the file at /usr/local/cs/bin/gcc since that is the first occurrence of the gcc program in the $PATH environment variable.
+5. Symbolic mode u+sx,o-w means that when the file is running, it will set its permissions to that of the user who owns the file and also gives the user who owns the file executable privileges. Other users not the owner or part of the group that owns the file will not be allowed to write to the file. I used man chmod to find this info.
+6. I used these commands:
+	touch --date "2022-02-28" /tmp/start
+	touch --date "2022-04-02" /tmp/end
+	find /usr/local/cs -type d -newer /tmp/start -not -newer /tmp/end
+to find all directories modified in the last four weeks under /usr/local/cs. This was the output:
+/usr/local/cs
+/usr/local/cs/bin
+/usr/local/cs/Python-3.10.0/bin
+/usr/local/cs/Python-3.10.0/lib/python3.10/site-packages
+
+[omitted a lot of python site-packages changes]
+
+/usr/local/cs/inetutils-2.2
+/usr/local/cs/inetutils-2.2/bin
+/usr/local/cs/inetutils-2.2/libexec
+/usr/local/cs/inetutils-2.2/share
+/usr/local/cs/inetutils-2.2/share/info
+/usr/local/cs/inetutils-2.2/share/man
+/usr/local/cs/inetutils-2.2/share/man/man1
+/usr/local/cs/inetutils-2.2/share/man/man8
+/usr/local/cs/share/info
+/usr/local/cs/share/man/man1
+/usr/local/cs/src
+/usr/local/cs/src/OLD
+/usr/local/cs/src/OLD/telnet
+/usr/local/cs/src/aiohttp
+/usr/local/cs/src/aiohttp/RCS
+/usr/local/cs/src/gdb
+/usr/local/cs/src/gdb/RCS
+/usr/local/cs/src/help2man
+/usr/local/cs/src/help2man/RCS
+/usr/local/cs/src/inetutils
+/usr/local/cs/help2man-1.49.1
+/usr/local/cs/help2man-1.49.1/bin
+/usr/local/cs/help2man-1.49.1/share
+/usr/local/cs/help2man-1.49.1/share/man
+/usr/local/cs/help2man-1.49.1/share/man/man1
+/usr/local/cs/help2man-1.49.1/share/info
+7. There were 250 symlinks in the /usr/bin directory where find is located. I used the "which" command to find the location
+of the directory and used "ls -l /usr/bin/ | grep -ce '->'" to filter and count all lines with symbolic links.
+8. The oldest regular file in /usr/lib64 based on date-modified is libbz2.so.1.0.6. I used the ls -alt /usr/lib64 | grep ^- command to list all the files by data modified and filter out all the regular files.
+9. In Emacs, the commands transpose-chars, transpose-lines, transpose-sexps, transpose-words have transpose in their names. I opened up the key bindings with C-h b and searched for the "transpose" string with the C-s shortcut.
+10. In Emacs, the yank function reinserts or pastes the last stretch of killed text. It can be invoked with the C-y keystrokes. I found this by pressing C-h b to show keybindings and searching through the document to find the yank function.
+11. For /usr/bin/, the ls -l command doesn't list the hidden . and .. directories and the first two lines displays different information
+from the emacs dired command. The emacs dired is more similar to the ls -al command and also labels what directory it shows
+at the very top of the output while the ls -l command does not. Other that, the outputs look pretty much identical.
+12. I used the command ps -efHt tty and saw the processes running under the login shell.
+This was the relevant output:
+root      266678    2167  0 21:03 ?        00:00:00     sshd: yangd [priv]
+yangd     266696  266678  0 21:03 ?        00:00:00       sshd: yangd@pts/11
+yangd     266698  266696  0 21:03 pts/11   00:00:00         -bash
+yangd     266813  266698  0 21:03 pts/11   00:00:00           ps -efHt tty

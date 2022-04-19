@@ -1,0 +1,69 @@
+Name: Daniel Yang
+ID: 205772799
+
+(Exercise 2.1)
+
+To compute (2^521 − 1) × (2^521 − 1) (i.e., 2**(521 - 1) * (2**521 - 1)):
+(* (expt 2 (- 521 1)) (- (expt 2 521) 1)) //is the equivalent statement in Lisp
+gives us the integer 235627234572673470657895489967099049884775478583926007101430275975063372831786222397303655396026005613602555664625032701750\
+528925780432155433824984287771524270103944969186640286445341280338314397902368386240331714359223566432197031017207131635274\
+87298747400647801939587165936401087419375649057918549492160555646976.
+
+To get the number of bits that the integer calculated produces:
+(logb (* (expt 2 (- 521 1)) (- (expt 2 521) 1)))
+gives us a result of 1040.
+
+After typing the exponent calculations after typing the keybinding M-: gives us the value of the integer above
+but only partially since the view pane is so small that the front portion gets cut off and appended to the back
+is the integer in hex and octal forms. This was the output:
+//start
+528925780432155433824984287771524270103944969186640286445341280338314397902368386240331714359223566432197031017207131635274\
+87298747400647801939587165936401087419375649057918549492160555646976 (#o777777777777777777777777777777777777777777777777777\
+777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777776\
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\
+00000000000000000000000000000000000000000000000000, #x1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000\
+000000000000000000000000000000000000000000000000000000000000000000000)
+//end
+
+From the C-h b output, we see that the C-h k looks up the documentation for a keybinding. After typing in this binding,
+the next keybinding typed will be the input and the shortcut will search up and show the documentation for that binding.
+By typing C-h k followed by C-h k, Emacs brought up documentation describing the "describe-key" function bound to C-h k.
+The function is bound to the C-h k keybind and when pressed follwed by C-h k, Emacs is instructed to use the C-h k 
+keybind as the input for the "describe-key" function, which searches up documentation for a keybinding. Therefore, this
+sequence of keystrokes will tell Emacs to show information about what the C-h k shortcut does.
+
+From the C-h b output, we see that the M-SPC deletes all spaces and tabs around a point leaving only one or N spaces.
+If N is negative, the shortcut also deletes newlines as well. Typing C-h k M-SPC brings up information about the
+"just-one-space" function, which is bound to the M-SPC keybind. The C-h k keybind runs the "describe-key" function,
+which takes in the next keybind typed as input and then searches and shows documentation about the function that
+is bound to the keybind typed. Since M-SPC was typed after the C-h k binding, the "describe-key" function searches
+up documentation about the function bound to the M-SPC binding which is the "just-one-space" function and then
+displays documentation about that function in the buffer.
+
+Trying out the M-SPC on sample text with a lot of whitespace, when the cursor is in the middle of the whitespace it is
+replaced with a single space. Only whitespace on the same line is replaced with a single space. Newline characters
+are kept intact with the keybinding.
+
+Looking at the source code for M-SPC, it is implemented using the more general function "cycle-spacing". Running the
+function on a buffer, it does the same thing as the M-SPC keybind.
+
+(Homework)
+
+When randline.py is invoked on an empty file like /dev/null the error:
+return seq[int(self.random() * len(seq))]  # raises IndexError if seq is empty
+appears. This is because the "chooseline" method in the "randline" class returns random.choice(self.lines).
+The random.choice() method call raises an error if the parameter passed into the method is an empty list or sequence.
+Therefore, if the file passed to the script is empty, then the script will return an IndexError due to the
+random.choice() method call.
+
+When randline.py is invoked with Python3 rather than Python2 the shell returns a SyntaxError for the line:
+except IOError as (errno, strerror):
+This is because in Python2 exceptions are iterable so parameters errno and strerror can be iterated by iterating over
+the IOError exception. This feature was removed from Python3 which is why running the script in Python3 returns a
+SyntaxError.
+
+When the shuf.py file is invoked with Python2 rather than Python3 the a SyntaxError is returned because the structural
+pattern matching is not a feature implemented in Python2 and even in Python3 it is only present in the more recent
+versions. Therefore, when running the script in Python2 the interpreter doesn't know how what to do with the "match"
+statement and so it just throws an error.

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cat /usr/share/dict/linux.words |  tr '[:upper:]' '[:lower:]' | sort > sorted.words
+cat /dev/stdin |  tr '[:upper:]' '[:lower:]' | tr -cs "A-Za-z0-9-'\!./," '[\n*]' | sort -u | comm -23 - sorted.words | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - sorted.words
