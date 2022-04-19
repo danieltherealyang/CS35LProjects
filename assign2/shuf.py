@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import argparse, random
+import argparse, random, sys
 
 def randomize(collection):
     random.shuffle(collection)
@@ -61,6 +61,8 @@ def main():
                         help = 'output at most COUNT lines')
     parser.add_argument('-r', '--repeat', action='store_true',
                         help = 'output lines can be repeated')
+    parser.add_argument('fileName', nargs='*')
+    
     args = parser.parse_args()
 
     if 'itemList' in args and 'itemRange' in args:
@@ -70,14 +72,21 @@ def main():
 
     collection = [];
     if 'itemList' in args:
-        randomize(args.itemList)
         collection = args.itemList
-
-    if 'itemRange' in args:
+    elif 'itemRange' in args:
         bounds = [0, 0]
         parseRange(args.itemRange, bounds)
         collection = [i for i in range(bounds[0], bounds[1] + 1)]
-        randomize(collection)
+    elif len(args.fileName) == 1:
+        f = open(args.fileName[0], 'r')
+        lines = f.readlines()
+        f.close()
+        collection = [line.rstrip() for line in lines]
+    else:
+        for line in sys.stdin:
+            collection.append(line.rstrip())
+
+    randomize(collection)
 
     flags = []
     if 'headCount' in args:
@@ -97,6 +106,8 @@ def main():
         case [False, True]:
             printRList(collection)
         case [False, False]:
+            printList(collection)
+        case _:
             printList(collection)
 
 if __name__ == "__main__":
