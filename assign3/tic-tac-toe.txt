@@ -1,0 +1,205 @@
+To get the development environment set up, I had to install nodejs with the 'sudo apt-get install nodejs' command
+and also installed the npm package with the same command. After installing everything I copied the starting source code
+and started the development environment with 'npm start' so that all changes I made to the source files could be viewed
+in the browser.
+
+Typing 'this.props.value' uses a property of a parameter passed into the class with a <ClassName value=x /> statement.
+Typing 'this.state.value' uses the value stored in the component state instead of a parameter.
+
+To make an interactive component call a function on mouseClick, the onClick={function() {[...statements...]}} is used
+in the tag. For a more compact syntax, the onClick={() => [...statements...]} can be used.
+
+To initialize a state, I typed:
+super(props);
+this.state={
+	[variable_name]: [value],
+	...
+};
+inside the class constructor.
+
+For coordination between components, it is best to lift the state up rather than use getters and setters. Lifting up the
+state means to store the data in a parent component and have the parent component pass the values down to the child
+components.
+
+After lifting the state to the Board class, the Square class no longer had any need to keep track of the state so instead
+of being a class Square could be rewritten as a function:
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+}
+This makes rendering Squares much simpler since the state is controlled by the Board class, all the Square function needs
+to do is to create a button.
+
+To take turns in the game, a boolean value can be stored in the state. There is no declaration of booleans to assign a
+boolean value just assign value of 'true' or 'false' like the following: "xIsNext: true".
+
+Typing "squares[i] = this.state.xIsNext ? 'X' : 'O';" allowed the program to determine what value to overwrite squares[i]
+as depending on the value of the xIsNext variable in the state. The '? :' syntax can be used to concisely assign variable
+values.
+
+Since components are supposed to be immutable, concatenation of arrays is the best way to update them. For example:
+history: history.concat([{
+	squares: squares,
+}])
+concatenates the state variable named 'history.'
+
+To set a key for list items, use the key= parameter in the <li> tag.
+<li key={move}>
+	<button onClick={() => this.jumpTo(move)}>{desc}</button>
+</li>
+
+To calculate the winner of the game, an array of all the winning square combinations is declared and the entire grid
+is checked for these winning square combinations to see if there is a winner.
+
+Full code explanation:
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+
+function Square(props) { //declares a button with the input onClick handler and displays the input value
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+}
+
+class Board extends React.Component {
+  renderSquare(i) { //creates a square
+    return (
+      <Square
+        value={this.props.squares[i]}
+        onClick={() => this.props.onClick(i)}
+      />
+    );
+  }
+
+  render() { //renders the board
+    return (
+      <div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+
+class Game extends React.Component {
+  constructor(props) { //stores the game state
+	super(props);
+	this.state = {
+	  history: [{
+		squares: Array(9).fill(null),
+	  }],
+	  xIsNext: true,
+	  stepNumber: 0,
+	};
+  }
+
+  handleClick(i) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+	if (calculateWinner(squares) || squares[i]) {
+	return;
+	}
+	squares[i] = this.state.xIsNext ? 'X' : 'O'; //if xIsNext then write X else write O
+	this.setState({ //add new state to history, increment other values
+	  history: history.concat([{
+	    squares: squares,
+	  }]),
+	  stepNumber: history.length,
+	  xIsNext: !this.state.xIsNext,
+	});
+  }
+
+  jumpTo(step) { //allows for setting of state to previous board state
+	this.setState({
+	  stepNumber: step,
+	  xIsNext: (step % 2) === 0,
+	});
+  }
+
+  render() { //renders the game elements
+	const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const winner = calculateWinner(current.squares);
+
+	const moves = history.map((step, move) => {
+      const desc = move ?
+        'Go to move #' + move :
+        'Go to game start';
+      return (
+        <li key={move}>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
+
+    let status;
+    if (winner) { //status message if there is a winner
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
+
+    return ( //returns game elements
+      <div className="game">
+        <div className="game-board">
+          <Board
+			squares={current.squares}
+			onClick={(i) => this.handleClick(i)}
+		  />
+        </div>
+        <div className="game-info">
+          <div>{status}</div>
+          <ol>{moves}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+
+// ========================================
+
+ReactDOM.render( //React call to render
+  <Game />,
+  document.getElementById('root')
+);
+
+function calculateWinner(squares) { //checks if player won by checking for a match of all the winning combinations
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+

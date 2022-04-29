@@ -1,0 +1,214 @@
+I used the finished tic-tac-toe game as the base of the chorus-lapilli game.
+
+I began by changing the Game class' handleClick(i) function. I changed the class state by adding variables to keep
+track of if there was a square in the buffer and the index of the square. I then added a control sequence to check
+if there was a square in the buffer and if not, the current square would be loaded.
+Here is the control sequence:
+if (hasBuffer) {
+    if (!squares[i]) {
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        hasBuffer = false;
+    }
+} else {
+    if (squares[i] === this.state.xIsNext ? 'X' : 'O') {
+        hasBuffer = true;
+    }
+}
+
+There were issues updating the state of the game so the only method that actually worked for me was to create a local
+copy of all of the state variables and process the input accordingly. After processing and changing the values of the
+local copies, push the values of the local copies to the state. Doing this made it possible to select and move a tile.
+
+This is the working function for handling input:
+handleClick(i) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    var stepNumber = this.state.stepNumber;
+    var xIsNext = this.state.xIsNext;
+    var hasBuffer = this.state.hasBuffer;
+    var selectionIndex = this.state.selectionIndex;
+    var endTurn = false;
+    
+    if (calculateWinner(squares)) {
+        return;
+    }
+    
+    var nextChar = this.state.xIsNext ? 'X' : 'O';
+    
+    if (this.state.stepNumber > 5) {
+        if (hasBuffer) {
+            if (!squares[i]) {
+                squares[selectionIndex] = null;
+                squares[i] = nextChar;
+                hasBuffer = false;
+                endTurn = true;
+            }
+        } else {
+            if (squares[i] === nextChar) {
+                selectionIndex = i;
+                hasBuffer = true;
+                endTurn = false;
+            }
+        }
+    } else {
+        if (squares[i]) {
+            return;
+        }
+        squares[i] = nextChar;
+        endTurn = true;
+    }
+    
+    if (endTurn) {
+        this.setState({
+            history: history.concat([
+                {
+                    squares: squares
+                }
+            ]),
+        });
+        stepNumber++;
+        xIsNext = !xIsNext;
+        selectionIndex = null;
+    }
+    this.setState({
+        stepNumber: stepNumber,
+        xIsNext: xIsNext,
+        hasBuffer: hasBuffer,
+        selectionIndex: selectionIndex,
+    });
+}
+
+First check the step number to see if each player has the appropriate number of tiles. After each has 3, then have the
+game use the buffering system to store the location of clicks. First click loads tile into buffer, second click then
+moves that tile to a free tile. After all of this is done, check if it is time to end the player's turn and if so,
+load the state of the square to the history. This is check is done so that the player's turn doesn't end after loading
+a tile into the buffer. 
+
+Now, we need to make sure that the buffered tile can only be moved adjacently to the original tile. Since the previous
+index of the buffered tile is stored in the state, we can write a function that checks if the new position is a valid
+move. We can calculate the row and column from the tile number and check if the difference is at most 1.
+function moveValid(oldTile, newTile) {
+    if (oldTile == null || newTile == null) {
+        return false;
+    }
+    var oldRow = Math.floor(oldTile / 3);
+    var oldCol = oldTile % 3;
+    var newRow = Math.floor(newTile / 3);
+    var newCol =  newTile % 3;
+    if (Math.abs(oldRow - newRow) <= 1 && Math.abs(oldCol - newCol) <= 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+Now, if the program is run, there is the problem of accidentally clicking and buffering a tile with no valid moves.
+We need to change the control sequence to account for this situation. If a tile is buffered and the next click is an
+invalid move, then we clear the buffer so the player has the option of selecting another tile.
+We simply need to add an else statement to the handleClick() function from before:
+if (hasBuffer) {
+    if (!squares[i] && moveValid(selectionIndex, i)) {
+        squares[selectionIndex] = null;
+        squares[i] = nextChar;
+        hasBuffer = false;
+        endTurn = true;
+    } else {
+        selectionIndex = null;
+        hasBuffer = false;
+        endTurn = false;
+    }
+}
+So now, if there is a tile buffered and the move was not valid then the buffer will be cleared.
+
+The next thing to do is to change the win condition for the players. We have to change the calculateWinner() function
+to check if the center tile is occupied and if the player has 3 pieces on the board. This is quite trivial so there is
+no need to show the code.
+
+Since the game can now still go on even after a possible winner was declared, the handleClick() function has to be
+changed. Instead of ending when calculateWinner() returns non-null, add a variable to the state that is set when the
+player chooses to win. The winner can only move from the center or choose to win so we must make sure that if the
+current winner is moving, they can only choose to move the center. To do this, we add a statement in the beginning
+of the handleClick() function that returns without doing anything if the current player is the winner and they are
+trying to add a tile that is not the center into the buffer.
+Here is the code to add:
+canWin = calculateWinner(squares);
+
+if (canWin === nextChar) {
+    if (i != 4 && !hasBuffer) {
+        return;
+    }
+}
+
+Now that the entire game is set up, we need to change the interface slightly so that the user can see if there is a
+tile in the buffer, who is moving, who is winning, and a choice to end the game and win.
+
+Create a banner function that displays a "Game Over" message if the game was won and create a button that allows the
+eligible player to end the game.
+
+The banner function is pretty trivial as it just takes in 'props' as input and returns a div message if true.
+For the button, the 'props' has a boolean value and a button handler passed as properties. The button handler
+is defined inside the Game class since it needs access to the state. A control sequence is added for the boolean
+to see if conditions are met to show the button. A selected tile message was also added so that the players could
+see which tiles they selected before they made their move.
+Here is the control sequence:
+let status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+let buffer = "Selected Tile: " + (this.state.hasBuffer ? this.state.selectionIndex : "");
+let displayButton;
+if (this.state.gameWon) {
+    displayButton = false;
+} else {
+    if (this.state.canWin && (this.state.xIsNext ? "X" : "O") === winner) {
+        displayButton = true;
+    }
+}
+
+And here is the revised render:
+<Banner
+    won={this.state.gameWon}
+    />
+<div>Winner: {winner}</div>
+<EndButton
+    display={displayButton}
+    onClick={() => this.buttonHandle()}
+    />
+<div>{status}</div>
+<div>{buffer}</div>
+<ol>{moves}</ol>
+
+After running npm pack --dry-run, this is the output:
+npm notice
+npm notice 📦  my-app@0.1.0
+npm notice === Tarball Contents ===
+npm notice 3.4kB README.md
+npm notice 809B  package.json
+npm notice 3.9kB public/favicon.ico
+npm notice 1.7kB public/index.html
+npm notice 5.3kB public/logo192.png
+npm notice 9.7kB public/logo512.png
+npm notice 492B  public/manifest.json
+npm notice 67B   public/robots.txt
+npm notice 639B  src/index.css
+npm notice 7.3kB src/index.js
+npm notice === Tarball Details ===
+npm notice name:          my-app
+npm notice version:       0.1.0
+npm notice filename:      my-app-0.1.0.tgz
+npm notice package size:  23.9 kB
+npm notice unpacked size: 33.3 kB
+npm notice shasum:        f88013be30a4395b0da9f1c5036cd03d55b5cc5c
+npm notice integrity:     sha512-jC5QYsWJ3OFKE[...]MpVBV/Yugzryg==
+npm notice total files:   10
+npm notice
+
+How to Interact:
+To interact with the app, the "Next Player: " section will display which player's turn it is. On the player's first 3
+turns, click an empty tile to place down. After the first 3 tiles, the player whose turn it is will click an existing
+tile to select it and click an empty tile to move the existing tile to the new location adjacent to its original
+position. If the click to place down the tile was invalid, the original tile will be deselected at which point the
+player can select the same tile or select another tile. If the win conditions are met, the player who met the conditions
+will be displayed next to the "Winner: " prompt and the following turn, there will be a button that appears allowing
+the player to win and end the game. If the player does not wish to end the game, they can continue playing by moving
+the tile occupying the center of the board. This will be the only valid move in the case of meeting the win conditions.
+For the first three moves of each player, the win condition is the same as tic tac toe. If a winner is not decided after
+each player's first three moves, then the win conditions change to chorus lapilli.
