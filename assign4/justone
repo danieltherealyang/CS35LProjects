@@ -1,0 +1,5 @@
+#!/bin/bash
+
+commits=($(git log --pretty=oneline -2 | cut -d ' ' -f 1))
+
+git diff ${commits[1]}...${commits[0]}

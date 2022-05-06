@@ -1,0 +1,30 @@
+diff --git a/NEWS b/NEWS
+index 1a8bed6d..63e160e1 100644
+--- a/NEWS
++++ b/NEWS
+@@ -5,6 +5,12 @@ Unreleased, experimental changes
+   Briefly:
+     Rename Europe/Kiev to Europe/Kyiv.
+ 
++  Changes to past timestamps
++
++    From fall 1994 through fall 1995, Shanks wrote that Crimea's
++    DST transitions were at 02:00 standard time, not at 00:00.
++    (Thanks to Michael Deckers.)
++
+   Changes to zone name
+ 
+     Rename Europe/Kiev to Europe/Kyiv, as the latter name is
+diff --git a/europe b/europe
+index 116eecde..80366fdb 100644
+--- a/europe
++++ b/europe
+@@ -2863,7 +2863,7 @@ Zone Europe/Simferopol	 2:16:24 -	LMT	1880
+ # changed in May.  This change evidently didn't last long; see below.
+ 			 2:00	C-Eur	EE%sT	1994 May
+ # From IATA SSIM (1994/1997), which also says that Kerch is still like Kiev.
+-			 3:00	E-Eur	MSK/MSD	1996 Mar 31  0:00s
++			 3:00	C-Eur	MSK/MSD	1996 Mar 31  0:00s
+ 			 3:00	1:00	MSD	1996 Oct 27  3:00s
+ # IATA SSIM (1997-09) says Crimea switched to EET/EEST.
+ # Assume it happened in March by not changing the clocks.

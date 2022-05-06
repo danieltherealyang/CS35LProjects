@@ -1,0 +1,9 @@
+In my git repository, there is only the master branch while in the ~eggert/src/github/git repository all of the branches
+are present: maint, master, next, seen, todo branches are all there.
+
+Another difference I found was that my cloned repo was more up to date than ~eggert/src/github/git since when I ran
+git log, the most recent commit for my repo was Wed May 4 09:51:39 2022 while for ~eggert/src/github/git the most recent
+commit was Thu Apr 28 10:44:14 2022.
+
+This means that the ~eggert/src/github/git is out of date with the HEAD of the remote repository while my cloned
+repository is up to date with the remote repository.

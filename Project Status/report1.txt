@@ -1,0 +1,19 @@
+Name: Daniel Yang
+UID: 205772799
+
+For this week my group worked on figuring out what tech stack we would use for the project. We went over the Figma design
+that one of our members drafted. We decided that for our user interface, we would have 5 buttons at the bottom that
+would: 1. open the camera and upload a picture 2. home page 3. groups 4. search by filter 5. user profile.
+We assigned tasks to work on the different components that our app frontend would need. To organize all our 
+components we decided to use UI Kitten.
+
+The main work that I did this week was setting up all of the infrastructure to get a working development environment.
+I cloned the git repository and installed yarn to run the development server. I also installed ExpoGo so that when making
+the app we could see if it was working on IOS. Getting the node development server and the ExpoGo set up was a bit
+challenging since I had to figure out what configurations and settings to use to get it all working but we figured
+everything out eventually. 
+
+For next week, the task I chose was to create the landing page. The landing page would be the page that displays the sign
+up and login buttons. The landing page might take less work than the other pages so if that's the case then I might do 
+the sign in page as well. The plan for next week is to get familiar with Typescript and React Native so that developing
+the rest of the app runs smoothly.

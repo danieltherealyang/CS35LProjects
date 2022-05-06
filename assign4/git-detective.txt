@@ -1,0 +1,23 @@
+Running the command: git log; and then typing '/"git diff --relative" segfaulted and/or produced incorrect result' to
+search for the string in less and searching for the earliest commit with that string gave the following commit id:
+c8f491668e46d66290aec97caaf94fe2c1ecccbd
+
+Running the command: git log -p c8f491668e46d66290aec97caaf94fe2c1ecccbd --graph
+showed me a graph of the git commits leading up to the git id.
+
+In the most recent commit prior to the merge, it had the commit id: 8174627b3d32dc80cb477b3fa46971955f26c6b2 and was
+authored by Doan Tran Cong Danh. In the commit message, it said that "diff-lib: ignore paths that are outside $cwd if 
+--relative asked" and in the test cases shown in the commit diff, it showed the git diff --relative passed multiple
+conditions. This suggests that the changes made in this commit were responsible for the fixing of the bug.
+
+In the commit, the changes made to diff-lib.c were:
+if (revs->diffopt.prefix &&
+	strncmp(ce->name, revs->diffopt.prefix, revs->diffopt.prefix_length))
+	continue;
+was added to the file.
+
+We can conclude from the merging of the branches to main after this commit that this change successfully fixed the git
+diff --relative bug.
+
+To generate the patch, I ran the command: git format-patch 8174627b3d32dc80cb477b3fa46971955f26c6b2; and moved the output
+to the file: git-format.patch
