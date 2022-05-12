@@ -5,7 +5,7 @@ import subprocess
 
 #git log -5 | grep Date: | tr -s ' ' | cut d ' ' -f 7
 
-grep_process = subprocess.Popen(['grep', 'Date:'], stdin=sys.stdin, stdout=subprocess.PIPE)
+grep_process = subprocess.Popen(['grep', '^Date:'], stdin=sys.stdin, stdout=subprocess.PIPE)
 tr_process = subprocess.Popen(['tr', '-s', ' '], stdin=grep_process.stdout, stdout=subprocess.PIPE)
 cut_process = subprocess.Popen(['cut', '-d', ' ', '-f', '7'], stdin=tr_process.stdout, stdout=subprocess.PIPE)
 output = cut_process.stdout.read().decode("utf-8").splitlines()
@@ -18,5 +18,10 @@ for i in output:
 	else:
 		map.update({i : 1})
 
-for i in sorted(map):
-	print(i + ' ' + str(map[i]))
+sorted = sorted(map)
+for i in reversed(sorted):
+	if i[0] == '-':
+		print(i + ' ' + str(map[i]))
+for i in sorted:
+	if i[0] == '+':
+		print(i + ' ' + str(map[i]))

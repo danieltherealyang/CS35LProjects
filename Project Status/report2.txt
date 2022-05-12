@@ -1,0 +1,15 @@
+Name: Daniel Yang
+UID: 205772799
+
+For the project this week, I familiarized myself with the UI Kitten library and learned how to implement and configure
+various components of the frontend. In the Git repo, I added a Landing Page to the directory containing all of the app's
+screens and linked the Landing Page to the navigation bar that another group member created so that I could easily
+develop the page and test to see if all of the changes I made during development looked appropriate and fit the design.
+
+The landing page I created was supposed to show the logo and have the sign up and login buttons but I only had the
+sign up and login buttons show with the logo replaced with text saying "Landing Page" just to act as a placeholder
+so that I can see if all of the component layouts are working correctly, since we haven't come up with a logo design.
+
+For next week, I am planning to meet with the rest of my group and split up the tasks assigned in the project schedule.
+Our goals laid out for the next week are to create a node backend and allow users to connect to each other as well as to
+generate a random target every day.
