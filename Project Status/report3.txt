@@ -1,0 +1,19 @@
+Name: Daniel Yang
+UID: 205772799
+
+For this week I set up the profile page for our app. I based the design off of Instagram's profile page. I added multiple
+clickable fields that show the information of the user and after clicking each of the fields, the app shows a new screen
+with the information from the field in a text input box so the user can edit. After clicking "Done," the app will then
+call whatever function handler that was passed to it. This is so that when the backend gets set up the function handler
+can send information to the database updating the information of the user. With this, the frontend design and function
+interfaces should be pretty much done and we can start focusing exclusively on backend from here on out.
+
+For next week, the plan is to allow users to get the backend set up so that users can add tags to posts and so that
+users can filter posts with tags. In addition, our group plans to get a scrollable feed set up and running so that
+users can browse interesting content created by other users that are similar to their content preferences. Another
+group member is still having issues with getting the camera to work but once that is done and the backend is set up
+we should be able to upload data to the server and have everyone run tests on whether the app is querying correctly.
+We are a falling a little bit behind schedule because getting everyone set up and familiar with the libraries and
+frameworks was more of a hassle than expected but now development is smooth and there shouldn't be many problems. There
+are two weeks of debugging time in our schedule so we have a bit of a buffer zone. The main thing we need now is to get
+the backend all set up because without that a lot of the other tasks that need to be done will be roadblocked.
