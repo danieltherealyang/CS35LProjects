@@ -1,0 +1,16 @@
+Name: Daniel Yang
+UID: 205772799
+
+For this week we finished working on the backend. I was really busy this week so I didn't work on the project a whole
+lot. I looked over the implementation of the backend by one of the group members. The backend was pretty barebones but
+it looked like everything we needed was there so I began to connect the pages that I worked on to the backend.
+I previously created empty function calls for the button handlers on the pages I made so all I really had to do was
+import the backend module interfaces and begin using them in the handlers. So, I worked on some of the button handlers
+to interface with the backend but we haven't met yet to get everyone up to speed on how to test the the app with the
+backend so it's just untested code right now.
+
+For next week, I'm planning to get the testing infrastructure for the backend so that it can run locally and we can
+continue to link up the frontend to the backend. Some of the pages for the frontend are still not complete so I might
+also work on some of them so we can finish adding all of the features to the frontend. After that, we should be pretty
+much done with the project. If we manage to finishe all of this next week, then we can have an entire week for testing
+and bug fixes.
