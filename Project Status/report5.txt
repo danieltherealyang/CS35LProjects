@@ -1,0 +1,16 @@
+Name: Daniel Yang
+UID: 205772799
+
+For this week we pretty much finished the entire frontend. The backend was implemented with Firebase so now all we have to
+do is import the library and hook up the front end button handlers to the backend. I was really busy this week so I mainly
+worked on polishing up the frontend for some of the pages that I worked on. I also made navigation handlers for my frontend
+screens so that somewhat hidden screens that other people were working on could easily be accessed by navigating through
+the screen. I also read through the Firebase documentation when I had some free time to get familiar with how the backend
+is going to work. In addition, I looked over some pull requests and the changes made to the repository so that I won't be
+too surprised when I continue working on my portion.
+
+For next week, I'm planning to go get the backend fully functional with the pages that I worked on. Since I already created
+the backbone structure in the program with button handler functions, all I really have to do is figure out the methods I
+need to call with Firebase, and write a couple lines for each button handler that requires backend interaction. Getting the
+backend fully integrated is the main priority and if I still have some time remaining then I will do a lot of debugging
+to make sure that everything is working as it is supposed to.
